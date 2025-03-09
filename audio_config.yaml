@@ -1,0 +1,96 @@
+# Audio Preprocessing Configuration
+
+output:
+  # Output format (wav, mp3, m4a, etc.)
+  format: wav
+  # Where to save processed files
+  directory: processed_audio
+  # Suffix to add to processed filenames
+  suffix: _processed
+
+compression:
+  # Convert to a compressed format after processing
+  enabled: true
+  format: m4a
+  codec: aac
+  bitrate: 64k
+
+preprocessing:
+  # Noise reduction settings
+  noise_reduction:
+    enabled: true
+    # How strong the noise reduction should be (low, medium, high)
+    strength: medium
+  
+  # Volume normalization settings
+  normalization:
+    enabled: true
+    # Target loudness level in LUFS (Loudness Units relative to Full Scale)
+    # -16 LUFS is streaming standard, -23 LUFS is broadcast standard
+    target_level: -16
+    # Maximum peak level in dB
+    true_peak: -1.5
+  
+  # Dynamic range compression
+  compression:
+    enabled: false
+    # Threshold in dB
+    threshold: -20
+    # Compression ratio (higher values mean more compression)
+    ratio: 4
+    # Attack time in milliseconds
+    attack: 5
+    # Release time in milliseconds
+    release: 50
+  
+  # Equalization presets
+  eq:
+    enabled: true
+    # Available presets: speech, music, custom
+    preset: speech
+
+# Preset configurations for specific use cases
+presets:
+  # For clear voice recordings with minimal background noise
+  clean_speech:
+    noise_reduction:
+      enabled: true
+      strength: low
+    normalization:
+      enabled: true
+      target_level: -16
+    compression:
+      enabled: false
+    eq:
+      enabled: true
+      preset: speech
+  
+  # For noisy environments (calls, public spaces)
+  noisy_environment:
+    noise_reduction:
+      enabled: true
+      strength: high
+    normalization:
+      enabled: true
+      target_level: -14
+    compression:
+      enabled: true
+      threshold: -24
+      ratio: 6
+    eq:
+      enabled: true
+      preset: speech
+  
+  # For music or mixed content
+  music:
+    noise_reduction:
+      enabled: true
+      strength: low
+    normalization:
+      enabled: true
+      target_level: -14
+    compression:
+      enabled: false
+    eq:
+      enabled: true
+      preset: music
